@@ -25,12 +25,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-
-    - name: SSH Remote Commands
-      uses: appleboy/ssh-action@v0.1.4
-      with:
-        key: ${{secrets.server_key}}
-        host: ${{secrets.server_ip}}
-        username: ${{secrets.server_username}}
-        scripts: |
-          ls
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: docker_nodejs_demo
+        IMAGE_TAG: nodejs_demo_image
+      run: |
+            docker ps
+    
